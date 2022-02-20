@@ -1,4 +1,4 @@
-# Akhila
+# SIMPLE LINEAR REGRESSION 
 # -*- coding: utf-8 -*-
 """
 Created on Tue Feb  8 10:37:24 2022
