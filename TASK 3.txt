@@ -1,0 +1,271 @@
+﻿#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+import numpy as np # linear algebra
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns      
+
+
+# In[2]:
+
+
+store = pd.read_csv("C:\\Users\\akhila bodasu\\Downloads\\SampleSuperstore.csv")
+
+
+# In[5]:
+
+
+store.head()
+
+
+# In[6]:
+
+
+store.tail()
+
+
+# In[7]:
+
+
+store.info()
+
+
+# In[7]:
+
+
+store.describe()
+
+
+# In[8]:
+
+
+store.isnull().sum()
+
+
+# In[9]:
+
+
+store.shape
+
+
+# In[10]:
+
+
+store.columns
+
+
+# In[11]:
+
+
+####
+
+store.duplicated().sum()
+
+
+# In[12]:
+
+
+##
+
+store.drop_duplicates()
+
+
+# In[14]:
+
+
+store.corr()
+
+
+# In[13]:
+
+
+store.cov()
+
+
+# In[19]:
+
+
+col=['Postal Code']
+store1=store.drop(columns=col,axis=1)
+
+
+# In[21]:
+
+
+plt.figure(figsize=(16,8))
+plt.bar('Sub-Category','Category', data=store)
+plt.show()
+
+
+# In[18]:
+
+
+print(store1['State'].value_counts())
+plt.figure(figsize=(15,8))
+sns.countplot(x=store1['State'])
+plt.xticks(rotation=90)
+plt.show()
+
+
+# In[22]:
+
+
+print(store['Sub-Category'].value_counts())
+plt.figure(figsize=(12,6))
+sns.countplot(x=store['Sub-Category'])
+plt.xticks(rotation=90)
+plt.show()
+
+
+# In[25]:
+
+
+sns.countplot(x=store['Segment'])
+
+
+# In[26]:
+
+
+sns.countplot(x=store['Region'])
+
+
+# In[27]:
+
+
+plt.figure(figsize=(40,25))
+sns.barplot(x=store['Sub-Category'], y=store['Profit'])
+
+
+# In[29]:
+
+
+plt.figure(figsize = (10,4))
+sns.lineplot('Discount', 'Profit', data = store, color = 'r', label= 'Discount')
+plt.legend()
+
+
+# In[30]:
+
+
+store1.hist(bins=50 ,figsize=(20,15))
+plt.show()
+
+
+# In[33]:
+
+
+figsize=(15,10)
+sns.pairplot(store1,hue='Sub-Category')
+
+
+
+
+
+
+# In[34]: 
+
+
+grouped=pd.DataFrame(store.groupby(['Ship Mode','Segment','Category','Sub-Category','State','Region'])['Quantity','Discount','Sales','Profit'].sum().reset_index())
+grouped
+
+
+# In[35]:
+
+
+store.groupby("State").Profit.agg(["sum","mean","min","max","count","median","std","var"])
+
+
+# In[36]:
+
+
+x = store.iloc[:, [9, 10, 11, 12]].values
+from sklearn.cluster import KMeans
+wcss = []
+
+for i in range(1, 11):
+    kmeans = KMeans(n_clusters = i, init = 'k-means++', 
+                    max_iter = 300, n_init = 10, random_state = 0).fit(x)
+    wcss.append(kmeans.inertia_)
+
+sns.set_style("whitegrid") 
+sns.FacetGrid(store, hue ="Sub-Category",height = 6).map(plt.scatter,'Sales','Quantity')
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:,1], 
+            s = 100, c = 'yellow', label = 'Centroids')
+
+plt.legend()
+
+
+# In[37]: 
+
+
+sns.pairplot(store1)
+
+
+# In[41]: 
+
+
+Q1 = store.quantile(q = 0.25, axis = 0, numeric_only = True, interpolation = 'linear')
+
+Q3 = store.quantile(q = 0.75, axis = 0, numeric_only = True, interpolation = 'linear')
+
+
+# In[42]:
+
+
+IQR = Q3 - Q1
+
+print(IQR)
+
+
+# In[43]:
+
+
+store.value_counts().nlargest().plot(kind = 'bar' , figsize = (10 , 5))
+
+
+# In[44]: 
+
+
+fig, ax = plt.subplots(figsize = (10 , 6))
+ax.scatter(store["Sales"] , store["Profit"])
+ax.set_xlabel('Sales')
+ax.set_ylabel('Profit')
+plt.show()
+
+
+# In[45]: 
+
+
+print(store['Sales'].describe())
+plt.figure(figsize = (9 , 8))
+sns.distplot(store['Sales'], color = 'b', bins = 100, hist_kws = {'alpha': 0.4});
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
