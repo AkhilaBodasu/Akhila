@@ -1,0 +1,222 @@
+﻿#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+#
+
+
+# In[ ]:
+
+
+
+
+
+# In[163]:
+
+
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
+from sklearn import tree
+  
+
+
+# In[164]:
+
+
+iris = pd.read_csv("C:\\Users\\akhila bodasu\\Downloads\\Iris (2).csv")
+
+
+# In[165]:
+
+
+iris
+
+
+# In[166]:
+
+
+
+print(iris.shape)
+
+
+# In[167]:
+
+
+iris.head()
+
+
+# In[168]:
+
+
+iris.info()
+
+
+# In[169]:
+
+
+iris.describe()
+
+
+# In[170]:
+
+
+iris.drop(['Id'],axis=1,inplace=True)
+
+
+# In[171]:
+
+
+iris.head()
+
+
+# In[172]:
+
+
+# Separating the target variable
+   X = iris.values[:, 1:4]
+   Y = iris.values[:, 5]
+
+
+# In[173]:
+
+
+X = iris.values[:, 0:4]
+
+
+# In[174]:
+
+
+Y = iris.values[:, 5]
+
+
+# In[175]:
+
+
+print(X)
+
+
+# In[176]:
+
+
+print(Y)
+
+
+# In[177]:
+
+
+# Splitting the dataset into train and test
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size = 0.3, random_state = 100)
+
+
+# In[178]:
+
+
+# Creating the classifier object
+clf_gini = DecisionTreeClassifier(criterion = "gini",random_state = 100,max_depth=3, min_samples_leaf=5)
+
+
+# In[179]:
+
+
+clf_gini.fit(X_train,y_train)
+
+
+# In[180]:
+
+
+X=[[7.2,2.6,4.5,1.2]]
+Y_pred=clf_gini.predict(X)
+print(Y_pred)
+
+
+# In[181]:
+
+
+Y_pred= clf_gini.predict(X_test)
+print(Y_pred)
+
+
+# In[ ]:
+
+
+
+
+
+# In[182]:
+
+
+# Function to calculate accuracy
+def cal_accuracy(y_test, Y_pred):
+        print("Accuracy : ",accuracy_score(y_test,y_pred)*100)
+
+
+# In[183]:
+
+
+print("Confusion Matrix: ",confusion_matrix(y_test, Y_pred))
+
+
+# In[184]:
+
+
+print("Accuracy : ",accuracy_score(y_test,Y_pred)*100)
+
+from sklearn import tree
+# In[185]:
+
+
+tree.plot_tree(clf_gini)
+
+
+# In[186]:
+
+
+from sklearn import tree
+
+tree.plot_tree(clf_gini)
+# In[187]:
+
+
+text_representation=tree.export_text(clf_gini)
+print(text_representation)
+
+
+|--- feature_2 <= 2.45
+|   |--- class: Iris-setosa
+|--- feature_2 >  2.45
+|   |--- feature_3 <= 1.65
+|   |   |--- feature_2 <= 4.85
+|   |   |   |--- class: Iris-versicolor
+|   |   |--- feature_2 >  4.85
+|   |   |   |--- class: Iris-versicolor
+|   |--- feature_3 >  1.65
+|   |   |--- feature_0 <= 5.95
+|   |   |   |--- class: Iris-virginica
+|   |   |--- feature_0 >  5.95
+|   |   |   |--- class: Iris-virginica
+
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
